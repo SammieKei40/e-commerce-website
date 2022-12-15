@@ -1,4 +1,5 @@
 <template>
+  <notifications position="top left" />
   <div
     class="py-16 container mx-auto px-4"
     v-for="product in products"
@@ -13,7 +14,9 @@
 
         <div class="m-3">
           <p>{{ products.description }}</p>
-          <p class="text-3xl font-bold">${{ product.price }}</p>
+          <p class="text-3xl font-bold">
+            ${{ product.price + Math.round(2.2 / 100) }}
+          </p>
         </div>
 
         <div>
@@ -37,6 +40,9 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification();
 const store = useStore();
 const products = computed(() => {
   return store.state.products;
@@ -50,8 +56,7 @@ const emit = defineEmits(["add-to-cart"]);
 const product = ref({
   selectedVariant: 0,
   variants: [
-    { id: 2, quantity: 10 },
-    { id: 3, quantity: 5 },
+    { id: 3, quantity: 10 },
   ],
 });
 
@@ -61,13 +66,19 @@ const inStock = computed(() => {
 
 function addToCart() {
   if (inStock.value) {
-    product.value.variants[product.value.selectedVariant].quantity--;
+    product.value.variants[product.value.selectedVariant].quantity++;
     emit(
       "add-to-cart",
       product.value.variants[product.value.selectedVariant].id
     );
+    // console.log(product.value.variants[product.value.selectedVariant].id)
+    notify({
+      title: "Success",
+      text: " Product added to cart",
+      type: "success",
+    });
   } else {
-    return false;
+    alert("Heyyyyy")
   }
 }
 </script>

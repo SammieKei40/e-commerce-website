@@ -22,7 +22,6 @@ export default createStore({
   mutations: {
     SET_PRODUCTS(state, products) {
       state.products = products;
-      console.log(state.products);
     },
   },
 });
