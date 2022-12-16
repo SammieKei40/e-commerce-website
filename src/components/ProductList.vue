@@ -22,6 +22,7 @@
         <div>
           <button
             :disabled="!inStock"
+            :key="product.id"
             @click="addToCart"
             :class="[
               inStock
@@ -48,6 +49,9 @@ const products = computed(() => {
   return store.state.products;
 });
 
+const id = computed(() => {
+  return store.state.idnew;
+});
 onMounted(() => {
   store.dispatch("fetchProducts");
 });
@@ -55,9 +59,7 @@ onMounted(() => {
 const emit = defineEmits(["add-to-cart"]);
 const product = ref({
   selectedVariant: 0,
-  variants: [
-    { id: 3, quantity: 10 },
-  ],
+  variants: [{ quantity: 20 }],
 });
 
 const inStock = computed(() => {
@@ -66,19 +68,19 @@ const inStock = computed(() => {
 
 function addToCart() {
   if (inStock.value) {
-    product.value.variants[product.value.selectedVariant].quantity++;
-    emit(
-      "add-to-cart",
-      product.value.variants[product.value.selectedVariant].id
-    );
-    // console.log(product.value.variants[product.value.selectedVariant].id)
+    product.value.variants[product.value.selectedVariant].quantity--;
+    emit("add-to-cart", id.value);
     notify({
       title: "Success",
       text: " Product added to cart",
       type: "success",
     });
   } else {
-    alert("Heyyyyy")
+    notify({
+      title: "Error",
+      text: "Sorry, an error occurs from our side while adding your product to the cart, we are currently working on it, Kindly try again.",
+      type: "error",
+    });
   }
 }
 </script>

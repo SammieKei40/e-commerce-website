@@ -20,7 +20,7 @@
 <script setup>
 import { ref } from "vue";
 import ProductList from "./components/ProductList.vue";
-const isMember = ref(false);
+// const isMember = ref(false);
 const cartItems = ref([]);
 function addToCart(id) {
   cartItems.value.push(id);
