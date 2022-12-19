@@ -22,8 +22,10 @@
         <div>
           <button
             :disabled="!inStock"
+            v-bind:id="product.id"
+            refs="product.id"
             :key="product.id"
-            @click="addToCart"
+            @click="addToCart(product.value)"
             :class="[
               inStock
                 ? 'bg-gradient-to-r from-cyan-500 to-blue-500 cursor-pointer'
@@ -70,6 +72,7 @@ function addToCart() {
   if (inStock.value) {
     product.value.variants[product.value.selectedVariant].quantity--;
     emit("add-to-cart", id.value);
+    console.log(id.value);
     notify({
       title: "Success",
       text: " Product added to cart",
